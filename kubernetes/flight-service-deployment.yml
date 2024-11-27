@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: flight-service
-          image: deadshot007/flight-service:v0.0.2
+          image: deadshot007/flight-server:v0.0.2
           env:
             - name: SPRING_CONFIG_IMPORT
               value: configserver:http://configserver-service:8888
