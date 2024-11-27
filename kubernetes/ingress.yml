@@ -1,0 +1,29 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressrules
+  namespace: flightbooking-microservices
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: Host(`config.local`) && PathPrefix(`/`)
+    kind: Rule
+    services:
+    - name: configserver-service
+      port: 8888
+  - match: Host(`traefik.local`) && PathPrefix(`/flight`)
+    kind: Rule
+    services:
+    - name: flight-service
+      port: 8080
+  - match: Host(`traefik.local`) && PathPrefix(`/passenger`)
+    kind: Rule
+    services:
+    - name: passenger-service
+      port: 8083
+  - match: Host(`traefik.local`) && PathPrefix(`/booking`)
+    kind: Rule
+    services:
+    - name: flightbooking-service
+      port: 8082
