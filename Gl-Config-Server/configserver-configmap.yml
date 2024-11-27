@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gl-config-server-config
+  namespace: flightbooking-microservices
+data:
+  application.properties: |
+    spring.application.name=Gl-Config-Server
+    spring.cloud.config.server.git.uri=https://github.com/dynamicabhay/gl-config-repo
+    server.port=8888
