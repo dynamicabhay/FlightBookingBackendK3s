@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-server
+  namespace: flightbooking-microservices
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: config-server
+  template:
+    metadata:
+      labels:
+        app: config-server
+    spec:
+      containers:
+        - name: config-server
+          image: deadshot007/config-server:v0.0.1
+          ports:
+            - containerPort: 8888
+          envFrom:
+            - configMapRef:
+                name: gl-config-server-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: configserver-service
+  namespace: flightbooking-microservices
+spec:
+  selector:
+    app: config-server
+  ports:
+    - protocol: TCP
+      port: 8888
+      targetPort: 8888
+  type: ClusterIP
