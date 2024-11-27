@@ -1,0 +1,41 @@
+management:
+  endpoint:
+    env:
+      show-values: always
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    circuitbreakers:
+      enabled: true
+    
+    
+server:
+  port: 8082
+spring:
+  application:
+    name: FlightBooking-Microservice
+#  config:
+#    import: configserver:http://localhost:8888
+#  kafka:
+#    topic:
+#      name: flightbooking-events
+      
+resilience4j:
+  circuitbreaker:
+    instances:
+      flightPassengerCircuitBreaker:
+       registerHealthIndicator: true
+       slidingWindowSize: 10
+       minimumNumberOfCalls: 5
+       permittedNumberOfCallsInHalfOpenState: 3
+       automaticTransitionFromOpenToHalfOpenEnabled: true
+       waitDurationInOpenState: 50s
+       failureRateThreshold: 50
+       eventConsumerBufferSize: 10
+       ignore-exceptions:
+          Exceptions: com.gl.flightBooking.exceptions.ResourceNotFoundException
+
