@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shared-mysql
+  namespace: flightbooking-microservices
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shared-mysql
+  template:
+    metadata:
+      labels:
+        app: shared-mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: booking
+        - name: MYSQL_USER
+          value: abhay
+        - name: MYSQL_PASSWORD
+          value: abhay
+        ports:
+        - containerPort: 3306
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: shared-mysql-service
+  namespace: flightbooking-microservices
+spec:
+  selector:
+    app: shared-mysql
+  ports:
+  - protocol: TCP
+    port: 3306
+    targetPort: 3306
+  type: ClusterIP
